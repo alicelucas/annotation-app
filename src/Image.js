@@ -8,9 +8,9 @@ export const Image = () => {
     return (
         <mesh>
             <boxBufferGeometry args={[1376,1032,1]}/>
-            <meshBacMaterial>
+            <meshBasicMaterial>
                 <primitive attach="map" object={texture} />
-            </meshBacMaterial>
+            </meshBasicMaterial>
 
         </mesh>
     )
