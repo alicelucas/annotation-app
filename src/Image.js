@@ -1,19 +1,17 @@
-import React, { useRef, useState } from 'react'
-import * as THREE from 'three'
-import bioImage from "./textures/cho44.png"
-
-//const texture = new THREE.TextureLoader().load("./textures/cho44.png")
-
-const texture = new THREE.TextureLoader().load(bioImage)
-
+import {Box, TransformControls, useTextureLoader} from "@react-three/drei";
+import React from "react";
+import bioImage from "./textures/cho44.png";
 
 export const Image = () => {
-    return (
+    const texture = useTextureLoader(bioImage)
+    return(
         <mesh>
-            <boxBufferGeometry args={[1376,1032,1]}/>
-            <meshBasicMaterial>
-                <primitive attach="map" object={texture} />
-            </meshBasicMaterial>
+            <Box args={[1376, 1032, 1]}>
+                <meshBasicMaterial attach="material">
+                    <primitive attach="map" object={texture}/>
+                </meshBasicMaterial>
+            </Box>
         </mesh>
-    )
+        )
+
 }
