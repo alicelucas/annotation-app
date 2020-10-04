@@ -1,7 +1,7 @@
-import React, {Suspense} from 'react'
+import React from 'react'
 import {Canvas} from 'react-three-fiber'
 import {OrbitControls} from "@react-three/drei";
-import {ImageControl} from "./ImageControl";
+import {ImageCanvas} from "./ImageCanvas";
 
 export const ImageViewer = () => {
     return (
@@ -12,10 +12,8 @@ export const ImageViewer = () => {
                 gl.setClearColor('black')
             }}
         >
-            <Suspense fallback={null}>
-                <ImageControl/>
-                <OrbitControls enableRotate={false} />
-            </Suspense>
+            <ImageCanvas/>
+            <OrbitControls enableRotate={false} />
         </Canvas>
     )
 };

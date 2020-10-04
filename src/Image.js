@@ -1,4 +1,4 @@
-import {Box, TransformControls, useTextureLoader} from "@react-three/drei";
+import {Box, useTextureLoader} from "@react-three/drei";
 import React from "react";
 import bioImage from "./textures/cho44.png";
 
