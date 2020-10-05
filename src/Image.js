@@ -6,10 +6,8 @@ export const Image = () => {
     const texture = useTextureLoader(bioImage)
     return(
         <mesh>
-            <Box args={[1376, 1032, 1]}>
-                <meshBasicMaterial attach="material">
-                    <primitive attach="map" object={texture}/>
-                </meshBasicMaterial>
+            <Box args={[1, 1]}>
+                <meshBasicMaterial attach="material" map={texture}/>
             </Box>
         </mesh>
         )
