@@ -4,7 +4,7 @@ import {ImageViewer} from "./ImageViewer.js"
 import {Canvas} from "react-three-fiber";
 import {OrbitControls, PerspectiveCamera, TransformControls} from "@react-three/drei";
 import {ImageCanvas} from "./ImageCanvas";
-import {Image} from "./Image";
+import {ImageBox} from "./ImageBox";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
             <PerspectiveCamera makeDefault position={[0, 0, 1]}/>
             <TransformControls mode={"translate"}>
                 <Suspense fallback={null}>
-                    <Image/>
+                    <ImageBox/>
                 </Suspense>
             </TransformControls>
             <OrbitControls enableRotate={false} />
