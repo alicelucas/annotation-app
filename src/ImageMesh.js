@@ -1,24 +1,27 @@
 import {Box, useTextureLoader} from "@react-three/drei";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import bioImage from "./textures/cho44.png";
 import Image from "image-js";
 
 export const ImageMesh = () => {
-    const [aspectRatio, setAspectRatio] = useState(1);
+    const [image, setImage] = useState(new Image())
     const [hovered, setHover] = useState(false)
 
     useEffect( () => {
         const fetchAspectRatio = async () => {
-            const image = await Image.load(bioImage)
-            setAspectRatio(image.width / image.height)
+            const img = await Image.load(bioImage)
+            setImage(img)
         }
         fetchAspectRatio().catch( () => {console.log("Error while loading image.")})
     },[])
 
-    const texture = useTextureLoader(bioImage)
+    //apply gaussian filter
+    const gaussian = image.gaussianFilter({radius: 50})
+    const texture = useTextureLoader(gaussian.toDataURL())
+
     return(
         <mesh onPointerOver={ (e) => setHover(true)} onPointerOut={(e) => setHover(false)}>
-            <Box args={[aspectRatio, 1]}>
+            <Box args={[image.width / image.height, 1]}>
                 <meshBasicMaterial attach="material" map={texture}/>
             </Box>
         </mesh>
