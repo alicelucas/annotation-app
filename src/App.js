@@ -4,7 +4,7 @@ import {ImageViewer} from "./ImageViewer.js"
 import {Canvas} from "react-three-fiber";
 import {OrbitControls, PerspectiveCamera, TransformControls} from "@react-three/drei";
 import {ImageCanvas} from "./ImageCanvas";
-import {ImageBox} from "./ImageBox";
+import {ImageMesh} from "./ImageMesh";
 
 function App() {
   return (
@@ -16,10 +16,10 @@ function App() {
                 gl.setClearColor('black')
             }}
         >
-            <PerspectiveCamera makeDefault position={[0, 0, 1]}/>
+            <PerspectiveCamera makeDefault position={[0, 0, 2]}/>
             <TransformControls mode={"translate"}>
                 <Suspense fallback={null}>
-                    <ImageBox/>
+                    <ImageMesh/>
                 </Suspense>
             </TransformControls>
             <OrbitControls enableRotate={false} />

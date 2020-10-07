@@ -1,5 +1,5 @@
 import React, {Suspense} from 'react'
 import {TransformControls} from "@react-three/drei";
-import {ImageBox} from "./ImageBox.js"
+import {ImageMesh} from "./ImageMesh.js"
 
 export const ImageCanvas = () => {}
