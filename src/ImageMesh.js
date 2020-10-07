@@ -8,15 +8,14 @@ export const ImageMesh = () => {
     const [hovered, setHover] = useState(false)
 
     useEffect( () => {
-        const fetchAspectRatio = async () => {
+        const fetchImage = async () => {
             const img = await Image.load(bioImage)
             setImage(img)
         }
-        fetchAspectRatio().catch( () => {console.log("Error while loading image.")})
+        fetchImage().catch( () => {console.log("Error while loading image.")})
     },[])
 
-    //apply gaussian filter
-    const gaussian = image.gaussianFilter({radius: 50})
+    const gaussian = image.gaussianFilter({radius: 5})
     const texture = useTextureLoader(gaussian.toDataURL())
 
     return(
