@@ -9,7 +9,7 @@ import {Controls, ControlsProvider, useControl} from "react-three-gui";
 import {BrightnessSlider} from "./BrightnessSlider";
 
 function App() {
-    const [brightness, setBrightness] = useState(0.0)
+    const [brightness, setBrightness] = useState(0.3)
 
     const onBrightnessChange = (value) => {
         setBrightness(value)

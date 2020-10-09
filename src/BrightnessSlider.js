@@ -4,12 +4,11 @@ import Slider from "@material-ui/core/Slider";
 export const BrightnessSlider = (props) => {
 
     const handleChange = (event, newValue) => {
-        console.log(newValue)
         props.onChange(newValue)
     }
+    //TODO fix the fact that things are discontinuous when going from 0 to 1
     return (
         <div>
-            //TODO fix the fact that things are discontinuous when going from 0 to 1
             <Slider
                 value={props.value}
                 onChange={handleChange}
