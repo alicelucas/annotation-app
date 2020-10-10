@@ -1,10 +1,4 @@
 export const shaders = {
-    uniforms: {
-        brightness: {
-            value: 0.2
-        }
-    },
-
     vertexShader: `
     varying vec2 vTextureCoord;
     void main() {    
@@ -23,21 +17,3 @@ export const shaders = {
     }
     `
 };
-
-// const uniforms = {
-//     uSampler: {
-//         value: texture
-//     },
-//     brightness: {
-//         value: props.brightness
-//     },
-// };
-
-// const uniforms_unmerged =    {
-//     uSampler: {
-//         value: props.texture
-//     },
-//     brightness: {
-//         value: props.foo
-//     },
-// }

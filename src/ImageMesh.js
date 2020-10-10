@@ -8,22 +8,12 @@ import * as THREE from "three";
 import { shaders } from "./shader";
 
 
-function AliceMaterial(props) {
+function ShaderMaterial(props) {
 
     const ref = useRef()
-    const texture_uniform = {
-        uSampler: {
-            value: props.texture
-        }
-    }
-    // const uniforms = useMemo(
-    //     () =>
-    //         // THREE.UniformsUtils.merge([THREE.UniformsLib.lights, shaders.uniforms]),
-    //         THREE.UniformsUtils.merge([texture_uniform, shaders.uniforms]),
-    //     []
-    // );
+
+    // TODO: why does useMemo fix it?
     const uniforms = useMemo( () => {
-        debugger;
         return (
             {
                 uSampler: {
@@ -33,47 +23,23 @@ function AliceMaterial(props) {
                     value: props.brightness
                 },
             }
-
         )
-        }, [])
+    },[])
 
 
     useFrame((state) => {
-        // @ts-ignore
-        // ref.current = { uniforms: {}}
         ref.current.uniforms.brightness.value = props.brightness;
-        // ref.current.uniforms.uSampler.value = props.texture
-        //
     });
-
 
     return (
         <shaderMaterial
-            ref={ref} // ADDED BY TIMUR
+            ref={ref}
             attach = "material"
-            vertexShader={vertexShader}
-            fragmentShader={fragmentShader}
+            vertexShader={shaders.vertexShader}
+            fragmentShader={shaders.fragmentShader}
             uniforms={uniforms}/>
     )
 }
-
-const vertexShader = `
-  varying vec2 vTextureCoord;
-  void main() {
-    vTextureCoord = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-  }
-`;
-
-const fragmentShader = `
-  uniform float brightness;
-  uniform sampler2D uSampler;
-  varying vec2 vTextureCoord;
-  void main() {
-    gl_FragColor = texture2D(uSampler, vTextureCoord);
-    gl_FragColor.rgb = gl_FragColor.rgb + brightness;
-  }
-`;
 
 export const ImageMesh = (props) => {
     const [image, setImage] = useState(new Image())
@@ -95,30 +61,15 @@ export const ImageMesh = (props) => {
     //TODO: toDataURL may be returning a promise. You have to handle it. I think this is the reason
     //why the screen is black sometimes.
     // const texture = useTextureLoader(image.toDataURL())
-
     const texture = useTextureLoader(bioImage)
-    // const uniforms = {
-    //     uSampler: {
-    //         value: texture
-    //     },
-    //     brightness: {
-    //         value: props.brightness
-    //     },
-    // };
-    //TODO: Is this the proper use of suspense
+
     return(
             <mesh onClick={handleClick}>
                 {/*<sphereBufferGeometry attach="geometry" args={[2, 16, 16]} />*/}
                 <Box args={[image.width / image.height, 1]}>
-                    {/*<shaderMaterial ref={ref} attach="material"*/}
-                    {/*                vertexShader={vertexShader}*/}
-                    {/*                fragmentShader={fragmentShader}*/}
-                    {/*                uniforms={uniforms}/>*/}
-                    <AliceMaterial brightness={brightness} texture={texture}/>
+                    <ShaderMaterial brightness={brightness} texture={texture}/>
                 </Box>
             </mesh>
-
-
         )
 
 }
