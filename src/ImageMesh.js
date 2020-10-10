@@ -43,12 +43,12 @@ function ShaderMaterial(props) {
 
 export const ImageMesh = (props) => {
     const [image, setImage] = useState(new Image())
-    const [brightness, setBrightness] = useState(0.2);
+    //const [brightness, setBrightness] = useState(0.2);
 
-    const handleClick = () => {
-        console.log(brightness)
-        setBrightness(brightness + 0.1);
-    };
+    // const handleClick = () => {
+    //     console.log(brightness)
+    //     setBrightness(brightness + 0.1);
+    // };
 
     useEffect( () => {
         const fetchImage = async () => {
@@ -64,10 +64,10 @@ export const ImageMesh = (props) => {
     const texture = useTextureLoader(bioImage)
 
     return(
-            <mesh onClick={handleClick}>
+            <mesh>
                 {/*<sphereBufferGeometry attach="geometry" args={[2, 16, 16]} />*/}
                 <Box args={[image.width / image.height, 1]}>
-                    <ShaderMaterial brightness={brightness} texture={texture}/>
+                    <ShaderMaterial brightness={props.brightness} texture={texture}/>
                 </Box>
             </mesh>
         )
