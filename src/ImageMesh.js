@@ -9,6 +9,7 @@ import { shaders } from "./shader";
 
 
 function AliceMaterial(props) {
+
     const ref = useRef()
     const texture_uniform = {
         uSampler: {
@@ -26,8 +27,9 @@ function AliceMaterial(props) {
         // @ts-ignore
         // ref.current = { uniforms: {}}
         ref.current.uniforms.brightness.value = props.brightness;
-        ref.current.uniforms.uSampler.value = props.texture;
+        //
     });
+
 
 
 
@@ -90,7 +92,6 @@ export const ImageMesh = (props) => {
     // };
     //TODO: Is this the proper use of suspense
     return(
-        <Suspense>
             <mesh onClick={handleClick}>
                 {/*<sphereBufferGeometry attach="geometry" args={[2, 16, 16]} />*/}
                 <Box args={[image.width / image.height, 1]}>
@@ -101,7 +102,7 @@ export const ImageMesh = (props) => {
                     <AliceMaterial brightness={brightness} texture={texture}/>
                 </Box>
             </mesh>
-        </Suspense>
+
 
         )
 
