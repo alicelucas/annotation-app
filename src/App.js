@@ -12,7 +12,9 @@ function App() {
     const [brightness, setBrightness] = useState(0.3)
 
     const onBrightnessChange = (value) => {
-        setBrightness(value)
+        //const parsedValue =
+        setBrightness(value === 0 ? 0 : value / 100)
+        console.log(brightness)
     }
 
     return (

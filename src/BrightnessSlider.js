@@ -10,10 +10,10 @@ export const BrightnessSlider = (props) => {
     return (
         <div>
             <Slider
-                value={props.value}
+                value={props.value * 100}
                 onChange={handleChange}
-                min={0.0}
-                max={1.0}
+                min={0}
+                max={100}
                 aria-labelledby="continuous-slider" />
         </div>
     )
