@@ -1,5 +1,5 @@
 import {Box, useTextureLoader} from "@react-three/drei";
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {Suspense, useEffect, useMemo, useRef, useState} from "react";
 import bioImage from "./textures/cho44.png";
 import bioImage2 from "./textures/01_POS002_F.TIF"
 import Image from "image-js";
@@ -88,17 +88,21 @@ export const ImageMesh = (props) => {
     //         value: props.brightness
     //     },
     // };
+    //TODO: Is this the proper use of suspense
     return(
-        <mesh onClick={handleClick}>
-            {/*<sphereBufferGeometry attach="geometry" args={[2, 16, 16]} />*/}
-            <Box args={[image.width / image.height, 1]}>
-                {/*<shaderMaterial ref={ref} attach="material"*/}
-                {/*                vertexShader={vertexShader}*/}
-                {/*                fragmentShader={fragmentShader}*/}
-                {/*                uniforms={uniforms}/>*/}
-                <AliceMaterial brightness={brightness} texture={texture}/>
-            </Box>
-        </mesh>
+        <Suspense>
+            <mesh onClick={handleClick}>
+                {/*<sphereBufferGeometry attach="geometry" args={[2, 16, 16]} />*/}
+                <Box args={[image.width / image.height, 1]}>
+                    {/*<shaderMaterial ref={ref} attach="material"*/}
+                    {/*                vertexShader={vertexShader}*/}
+                    {/*                fragmentShader={fragmentShader}*/}
+                    {/*                uniforms={uniforms}/>*/}
+                    <AliceMaterial brightness={brightness} texture={texture}/>
+                </Box>
+            </mesh>
+        </Suspense>
+
         )
 
 }
