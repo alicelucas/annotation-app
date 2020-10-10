@@ -11,13 +11,15 @@ import { shaders } from "./shader";
 function ShaderMaterial(props) {
 
     const ref = useRef()
+    const texture = useTextureLoader(props.image)
+
 
     // TODO: why does useMemo fix it?
     const uniforms = useMemo( () => {
         return (
             {
                 uSampler: {
-                    value: props.texture
+                    value: texture
                 },
                 brightness: {
                     value: props.brightness
@@ -42,7 +44,7 @@ function ShaderMaterial(props) {
 }
 
 export const ImageMesh = (props) => {
-    const [image, setImage] = useState(new Image())
+    const [image, setImage] = useState('')
     //const [brightness, setBrightness] = useState(0.2);
 
     // const handleClick = () => {
@@ -53,22 +55,28 @@ export const ImageMesh = (props) => {
     useEffect( () => {
         const fetchImage = async () => {
             const img = await Image.load(bioImage)
-            setImage(img)
+            const bImage = await img.toDataURL();
+            setImage(bImage)
         }
         fetchImage().catch( (reason) => {console.log("Error while loading image: " + reason)})
     },[])
 
     //TODO: toDataURL may be returning a promise. You have to handle it. I think this is the reason
     //why the screen is black sometimes.
-    // const texture = useTextureLoader(image.toDataURL())
-    const texture = useTextureLoader(bioImage)
+    // const texture = image && useTextureLoader(image)
+    //const texture = useTextureLoader(bioImage)
+    // console.log(texture);
+
 
     return(
             <mesh>
                 {/*<sphereBufferGeometry attach="geometry" args={[2, 16, 16]} />*/}
-                <Box args={[image.width / image.height, 1]}>
-                    <ShaderMaterial brightness={props.brightness} texture={texture}/>
-                </Box>
+                {image &&
+                    <Box args={[1, 1]}>
+                        <ShaderMaterial brightness={props.brightness} image={image}/>
+                        {/* <ShaderMaterial brightness={props.brightness}/>*/}
+                    </Box>
+                }
             </mesh>
         )
 
