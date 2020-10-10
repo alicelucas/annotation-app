@@ -7,26 +7,37 @@ import {useFrame, useUpdate} from "react-three-fiber";
 import * as THREE from "three";
 import { shaders } from "./shader";
 
+
 function AliceMaterial(props) {
-    const ref = useRef([])
+    const ref = useRef()
+    const texture_uniform = {
+        uSampler: {
+            value: props.texture
+        }
+    }
     const uniforms = useMemo(
         () =>
-            THREE.UniformsUtils.merge([THREE.UniformsLib.lights, shaders.uniforms]),
+            // THREE.UniformsUtils.merge([THREE.UniformsLib.lights, shaders.uniforms]),
+            THREE.UniformsUtils.merge([texture_uniform, shaders.uniforms]),
         []
     );
 
     useFrame((state) => {
-        ref.current.uniforms.foo.value = props.foo
+        // @ts-ignore
+        // ref.current = { uniforms: {}}
+        ref.current.uniforms.brightness.value = props.brightness;
+        ref.current.uniforms.uSampler.value = props.texture;
     });
 
-    // const uniforms = useMemo(
-    //     () => THREE.UniformsUtils.merge([uniforms_tmp]),[])
+
 
     return (
-        <shaderMaterial attach="material"
-                        vertexShader={vertexShader}
-                        fragmentShader={fragmentShader}
-                        uniforms={uniforms}/>
+        <shaderMaterial
+            ref={ref} // ADDED BY TIMUR
+            attach = "material"
+            vertexShader={vertexShader}
+            fragmentShader={fragmentShader}
+            uniforms={uniforms}/>
     )
 }
 
@@ -38,23 +49,23 @@ const vertexShader = `
   }
 `;
 
-const fragmentShader = `  
+const fragmentShader = `
   uniform float brightness;
   uniform sampler2D uSampler;
   varying vec2 vTextureCoord;
   void main() {
     gl_FragColor = texture2D(uSampler, vTextureCoord);
-    gl_FragColor.rgb = gl_FragColor.rgb + brightness;   
+    gl_FragColor.rgb = gl_FragColor.rgb + brightness;
   }
 `;
 
 export const ImageMesh = (props) => {
     const [image, setImage] = useState(new Image())
-    const [foo, setFoo] = useState(0.5);
+    const [brightness, setBrightness] = useState(0.2);
 
     const handleClick = () => {
-        console.log(foo)
-        setFoo(foo + 0.1);
+        console.log(brightness)
+        setBrightness(brightness + 0.1);
     };
 
     useEffect( () => {
@@ -68,7 +79,7 @@ export const ImageMesh = (props) => {
     //TODO: toDataURL may be returning a promise. You have to handle it. I think this is the reason
     //why the screen is black sometimes.
     // const texture = useTextureLoader(image.toDataURL())
-    const texture = useTextureLoader(bioImage)
+    const texture = useTextureLoader(image.toDataURL())
     // const uniforms = {
     //     uSampler: {
     //         value: texture
@@ -79,12 +90,13 @@ export const ImageMesh = (props) => {
     // };
     return(
         <mesh onClick={handleClick}>
+            {/*<sphereBufferGeometry attach="geometry" args={[2, 16, 16]} />*/}
             <Box args={[image.width / image.height, 1]}>
                 {/*<shaderMaterial ref={ref} attach="material"*/}
                 {/*                vertexShader={vertexShader}*/}
                 {/*                fragmentShader={fragmentShader}*/}
                 {/*                uniforms={uniforms}/>*/}
-                <AliceMaterial foo={foo} texture={texture}/>
+                <AliceMaterial brightness={brightness} texture={texture}/>
             </Box>
         </mesh>
         )

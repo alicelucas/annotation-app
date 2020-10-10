@@ -1,28 +1,37 @@
 export const shaders = {
     uniforms: {
-        foo: {
-            type: "f",
-            value: 0.5
+        brightness: {
+            value: 0.2
         }
     },
+
     vertexShader: `
-    uniform float foo;
-  
-    void main() 
-    {
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    varying vec2 vTextureCoord;
+    void main() {    
+      vTextureCoord = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
     }
-  `,
+   `,
 
     fragmentShader: `
-    uniform float foo;
-
+    uniform float brightness;
+    uniform sampler2D uSampler;
+    varying vec2 vTextureCoord;
     void main() {
-      gl_FragColor = vec4(foo, foo, foo, 1.0);
+      gl_FragColor = texture2D(uSampler, vTextureCoord);
+      gl_FragColor.rgb = gl_FragColor.rgb + brightness;   
     }
-  `
+    `
 };
 
+// const uniforms = {
+//     uSampler: {
+//         value: texture
+//     },
+//     brightness: {
+//         value: props.brightness
+//     },
+// };
 
 // const uniforms_unmerged =    {
 //     uSampler: {
