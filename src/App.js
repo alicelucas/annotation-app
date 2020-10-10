@@ -9,7 +9,7 @@ import {Controls, ControlsProvider, useControl} from "react-three-gui";
 import {BrightnessSlider} from "./BrightnessSlider";
 
 function App() {
-    const [brightness, setBrightness] = useState(0.3)
+    const [brightness, setBrightness] = useState(0.0)
 
     const onBrightnessChange = (value) => {
         //const parsedValue =
@@ -17,6 +17,7 @@ function App() {
         console.log(brightness)
     }
 
+    //TODO Go back to using TransformControls when you have figured out proper panning.
     return (
     <div className="App">
         <BrightnessSlider onChange={onBrightnessChange} value={brightness}/>
@@ -28,7 +29,6 @@ function App() {
             }}
         >
             <PerspectiveCamera makeDefault position={[0, 0, 2]}/>
-            //TODO Go back to using TransformControls when you have figured out proper panning.
             {/*<TransformControls mode={"translate"}>*/}
                 <Suspense fallback={null}>
                     <ImageMesh brightness={brightness}/>

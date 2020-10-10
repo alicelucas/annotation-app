@@ -3,10 +3,9 @@ export const shaders = {
     varying vec2 vTextureCoord;
     void main() {    
       vTextureCoord = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
    `,
-
     fragmentShader: `
     uniform float brightness;
     uniform sampler2D uSampler;

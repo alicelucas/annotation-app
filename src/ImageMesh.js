@@ -4,17 +4,15 @@ import bioImage from "./textures/cho44.png";
 import bioImage2 from "./textures/01_POS002_F.TIF"
 import Image from "image-js";
 import {useFrame, useUpdate} from "react-three-fiber";
-import * as THREE from "three";
 import { shaders } from "./shader";
-
 
 function ShaderMaterial(props) {
 
+    // We create ref to access shaderMaterial's uniforms property later, in useFrame
     const ref = useRef()
-    const texture = useTextureLoader(props.image)
+    const texture = useTextureLoader(props.imageURL)
 
-
-    // TODO: why does useMemo fix it?
+    //useMemo: when no array is provided in the dependency, a new value is computed on every render.
     const uniforms = useMemo( () => {
         return (
             {
@@ -28,7 +26,7 @@ function ShaderMaterial(props) {
         )
     },[])
 
-
+    //This hook calls you back every frame.
     useFrame((state) => {
         ref.current.uniforms.brightness.value = props.brightness;
     });
@@ -36,7 +34,7 @@ function ShaderMaterial(props) {
     return (
         <shaderMaterial
             ref={ref}
-            attach = "material"
+            attach="material"
             vertexShader={shaders.vertexShader}
             fragmentShader={shaders.fragmentShader}
             uniforms={uniforms}/>
@@ -44,37 +42,24 @@ function ShaderMaterial(props) {
 }
 
 export const ImageMesh = (props) => {
-    const [image, setImage] = useState('')
-    //const [brightness, setBrightness] = useState(0.2);
-
-    // const handleClick = () => {
-    //     console.log(brightness)
-    //     setBrightness(brightness + 0.1);
-    // };
+    const [imageURL, setImageURL] = useState('')
+    const [aspectRatio, setAspectRatio] = useState(1)
 
     useEffect( () => {
         const fetchImage = async () => {
             const img = await Image.load(bioImage)
-            const bImage = await img.toDataURL();
-            setImage(bImage)
+            setAspectRatio(img.width / img.height)
+            const imageURL = await img.toDataURL();
+            setImageURL(imageURL)
         }
         fetchImage().catch( (reason) => {console.log("Error while loading image: " + reason)})
     },[])
 
-    //TODO: toDataURL may be returning a promise. You have to handle it. I think this is the reason
-    //why the screen is black sometimes.
-    // const texture = image && useTextureLoader(image)
-    //const texture = useTextureLoader(bioImage)
-    // console.log(texture);
-
-
     return(
             <mesh>
-                {/*<sphereBufferGeometry attach="geometry" args={[2, 16, 16]} />*/}
-                {image &&
-                    <Box args={[1, 1]}>
-                        <ShaderMaterial brightness={props.brightness} image={image}/>
-                        {/* <ShaderMaterial brightness={props.brightness}/>*/}
+                {imageURL &&
+                    <Box args={[aspectRatio, 1]}>
+                        <ShaderMaterial brightness={props.brightness} imageURL={imageURL}/>
                     </Box>
                 }
             </mesh>
