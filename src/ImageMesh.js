@@ -16,21 +16,35 @@ function AliceMaterial(props) {
             value: props.texture
         }
     }
-    const uniforms = useMemo(
-        () =>
-            // THREE.UniformsUtils.merge([THREE.UniformsLib.lights, shaders.uniforms]),
-            THREE.UniformsUtils.merge([texture_uniform, shaders.uniforms]),
-        []
-    );
+    // const uniforms = useMemo(
+    //     () =>
+    //         // THREE.UniformsUtils.merge([THREE.UniformsLib.lights, shaders.uniforms]),
+    //         THREE.UniformsUtils.merge([texture_uniform, shaders.uniforms]),
+    //     []
+    // );
+    const uniforms = useMemo( () => {
+        debugger;
+        return (
+            {
+                uSampler: {
+                    value: props.texture
+                },
+                brightness: {
+                    value: props.brightness
+                },
+            }
+
+        )
+        }, [])
+
 
     useFrame((state) => {
         // @ts-ignore
         // ref.current = { uniforms: {}}
         ref.current.uniforms.brightness.value = props.brightness;
+        // ref.current.uniforms.uSampler.value = props.texture
         //
     });
-
-
 
 
     return (
@@ -81,7 +95,8 @@ export const ImageMesh = (props) => {
     //TODO: toDataURL may be returning a promise. You have to handle it. I think this is the reason
     //why the screen is black sometimes.
     // const texture = useTextureLoader(image.toDataURL())
-    const texture = useTextureLoader(image.toDataURL())
+
+    const texture = useTextureLoader(bioImage)
     // const uniforms = {
     //     uSampler: {
     //         value: texture
