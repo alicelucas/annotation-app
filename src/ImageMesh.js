@@ -10,8 +10,12 @@ function ShaderMaterial(props) {
 
     // We create ref to access shaderMaterial's uniforms property later, in useFrame
     const ref = useRef()
+
+    // TODO: Ask Allen. Calling the line below in the parent component resulted in no texture loaded.
     const texture = useTextureLoader(props.imageURL)
 
+
+    // TODO: Ask Allen. Why did I need useMemo and useFrame? Couldn't make it work without.
     //useMemo: when no array is provided in the dependency, a new value is computed on every render.
     const uniforms = useMemo( () => {
         return (
@@ -20,7 +24,7 @@ function ShaderMaterial(props) {
                     value: texture
                 },
                 brightness: {
-                    value: props.brightness
+                    value: 0.0
                 },
             }
         )
@@ -45,23 +49,22 @@ export const ImageMesh = (props) => {
     const [imageURL, setImageURL] = useState('')
     const [aspectRatio, setAspectRatio] = useState(1)
 
+    // useEffect to run the following only once, when the component first mounts.
     useEffect( () => {
         const fetchImage = async () => {
             const img = await Image.load(bioImage)
+            const imageurl = await img.toDataURL();
             setAspectRatio(img.width / img.height)
-            const imageURL = await img.toDataURL();
-            setImageURL(imageURL)
+            setImageURL(imageurl)
         }
         fetchImage().catch( (reason) => {console.log("Error while loading image: " + reason)})
     },[])
 
     return(
             <mesh>
-                {imageURL &&
-                    <Box args={[aspectRatio, 1]}>
-                        <ShaderMaterial brightness={props.brightness} imageURL={imageURL}/>
-                    </Box>
-                }
+                <Box args={[aspectRatio, 1]}>
+                    <ShaderMaterial brightness={props.brightness} imageURL={imageURL}/>
+                </Box>
             </mesh>
         )
 

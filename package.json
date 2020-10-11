@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.1.2",
     "drei": "^1.5.7",
     "image-js": "^0.28.0",
+    "rc-slider": "^9.5.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
