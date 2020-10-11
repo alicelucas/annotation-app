@@ -1,4 +1,6 @@
 export const shaders = {
+
+
     vertexShader: `
     varying vec2 vTextureCoord;
     void main() {    
@@ -8,14 +10,36 @@ export const shaders = {
    `,
     fragmentShader: `
     uniform float brightness;
+    uniform float contrast;
+    
     uniform sampler2D uSampler;
     varying vec2 vTextureCoord;
+    
+    mat4 brightnessMatrix( float brightness )
+    {
+        return mat4( 1, 0, 0, 0,
+                     0, 1, 0, 0,
+                     0, 0, 1, 0,
+                     brightness, brightness, brightness, 1 );
+    }
+    mat4 contrastMatrix( float contrast )
+    {
+    float t = ( 1.0 - contrast ) / 2.0;
+        
+        return mat4( contrast, 0, 0, 0,
+                     0, contrast, 0, 0,
+                     0, 0, contrast, 0,
+                     t, t, t, 1 );
+    }
+    
     void main() {
       gl_FragColor = texture2D(uSampler, vTextureCoord);
-      gl_FragColor.rgb = gl_FragColor.rgb + brightness;   
+      gl_FragColor = brightnessMatrix( brightness ) * contrastMatrix( contrast ) * gl_FragColor;   
     }
     `
 };
+
+
 
 //Temporary notes (from MDN Docs)
 //The vertex shader is run for each vertex in the shape. Its job is to transform the input vertex from its original

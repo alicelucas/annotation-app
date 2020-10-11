@@ -26,6 +26,9 @@ function ShaderMaterial(props) {
                 brightness: {
                     value: 0.0
                 },
+                contrast: {
+                    value: 1.0
+                }
             }
         )
     },[])
@@ -33,6 +36,7 @@ function ShaderMaterial(props) {
     //This hook calls you back every frame.
     useFrame((state) => {
         ref.current.uniforms.brightness.value = props.brightness;
+        ref.current.uniforms.contrast.value = props.contrast;
     });
 
     return (
@@ -52,7 +56,7 @@ export const ImageMesh = (props) => {
     // useEffect to run the following only once, when the component first mounts.
     useEffect( () => {
         const fetchImage = async () => {
-            const img = await Image.load(bioImage)
+            const img = await Image.load(bioImage2)
             const imageurl = await img.toDataURL();
             setAspectRatio(img.width / img.height)
             setImageURL(imageurl)
@@ -63,7 +67,7 @@ export const ImageMesh = (props) => {
     return(
             <mesh>
                 <Box args={[aspectRatio, 1]}>
-                    <ShaderMaterial brightness={props.brightness} imageURL={imageURL}/>
+                    <ShaderMaterial brightness={props.brightness} contrast={props.contrast} imageURL={imageURL}/>
                 </Box>
             </mesh>
         )

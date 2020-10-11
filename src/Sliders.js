@@ -18,3 +18,22 @@ export const BrightnessSlider = (props) => {
         </div>
     )
 }
+
+
+export const ContrastSlider = (props) => {
+
+    const handleChange = (event, newValue) => {
+        props.onChange(newValue)
+    }
+    //TODO fix the fact that things are discontinuous when going from 0 to 1
+    return (
+        <div>
+            <Slider
+                value={props.value * 100}
+                onChange={handleChange}
+                min={0}
+                max={200}
+                aria-labelledby="continuous-slider" />
+        </div>
+    )
+}
